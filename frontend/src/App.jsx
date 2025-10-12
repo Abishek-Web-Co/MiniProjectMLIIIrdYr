@@ -1,67 +1,35 @@
-// src/App.jsx
-
-import React, { useState } from 'react';
-import './App.css'; // This file can be used for styling
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
 function App() {
-    // State variables to store our data
-    const [prediction, setPrediction] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+  const [count, setCount] = useState(0)
 
-    // Function to call our Python backend
-    const getPrediction = async () => {
-        setLoading(true);
-        setError('');
-        setPrediction(null);
-        
-        try {
-            // Send a request to the Flask API endpoint
-            const response = await fetch('http://127.0.0.1:5000/predict');
-            
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            
-            const data = await response.json();
-
-            if (data.predicted_price) {
-                setPrediction(`$${data.predicted_price}`);
-            } else {
-                setError(data.error || 'Failed to get a valid prediction.');
-            }
-        } catch (err) {
-            setError('An error occurred while fetching the prediction.');
-            console.error(err);
-        }
-        
-        setLoading(false);
-    };
-
-    return (
-        <div className="App">
-            <header className="App-header">
-                <h1>Stock Price Predictor 📈</h1>
-                <p>Get the next day's predicted closing price for Apple (AAPL)</p>
-                
-                <button onClick={getPrediction} disabled={loading}>
-                    {loading ? 'Thinking...' : 'Get Prediction'}
-                </button>
-                
-                {prediction && (
-                    <div className="result">
-                        Predicted Price: <strong>{prediction}</strong>
-                    </div>
-                )}
-                
-                {error && (
-                    <div className="error">
-                        {error}
-                    </div>
-                )}
-            </header>
-        </div>
-    );
+  return (
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
 }
 
-export default App;
+export default App
