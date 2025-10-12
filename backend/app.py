@@ -1,9 +1,10 @@
-# MiniProjectML/backend/app.py
+# MiniProjectML/backend/app.py (Corrected Version)
 
 from flask import Flask, jsonify
 from flask_cors import CORS
 import yfinance as yf
 import joblib
+import pandas as pd  # Make sure to import pandas
 
 # Initialize App
 app = Flask(__name__)
@@ -17,15 +18,20 @@ def predict():
     try:
         # Get latest data
         latest_data = yf.download('AAPL', period='1d', interval='1d')
-        features = [[
-            latest_data['Open'].iloc[0],
-            latest_data['High'].iloc[0],
-            latest_data['Low'].iloc[0],
-            latest_data['Volume'].iloc[0]
-        ]]
         
-        # Predict
-        prediction = model.predict(features)
+        # --- THIS IS THE FIX ---
+        # Instead of a list of lists, we create a pandas DataFrame
+        # that exactly matches the format of our training data.
+        features_df = pd.DataFrame([{
+            'Open': latest_data['Open'].iloc[0],
+            'High': latest_data['High'].iloc[0],
+            'Low': latest_data['Low'].iloc[0],
+            'Volume': latest_data['Volume'].iloc[0]
+        }])
+        
+        # Predict using the DataFrame
+        prediction = model.predict(features_df)
+        
         return jsonify({'predicted_price': round(prediction[0], 2)})
     except Exception as e:
         return jsonify({'error': str(e)})
