@@ -2,6 +2,7 @@
 
 A machine learning-based project that predicts stock trends using historical stock data.  
 This project uses trained data to forecast future stock movement patterns.
+It can not be used by investors or traders to make informed decisions about buying or selling stocks as it is purely for educational purposes only.
 
 ---
 
